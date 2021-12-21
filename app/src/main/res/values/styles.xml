@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="thintext" parent="@style/TextAppearance.Compat.Notification.Line2">
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+</resources>

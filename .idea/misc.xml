@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_main.xml" value="0.45454545454545453" />
+        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/dismissible.xml" value="2.425" />
+        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/tile_layout.xml" value="1.434375" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
