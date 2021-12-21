@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -48,7 +49,6 @@ public class MainActivity extends Activity {
 
         getMarketCap();
         getAndSetPriceData();
-        getBlockCount();
         getBlocks();
 
 
@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
     public void getAndSetPriceData() {
         TextView textViewPrice = (TextView) findViewById(R.id.tv_price);
         TextView textViewPriceChange = (TextView) findViewById(R.id.tv_pricechange24);
+        ImageView exrateicon = (ImageView) findViewById(R.id.image_bitcoinlogo);
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest JsonObjectRequestPriceClose = new JsonObjectRequest
                 (Request.Method.GET, urlPrice, null, new Response.Listener<JSONObject>() {
@@ -88,11 +89,13 @@ public class MainActivity extends Activity {
                             priceopen = Double.parseDouble(response.getString("open"));
                             textViewPriceChange.setText(twodecimalsFormatter.format(((priceclose/priceopen)-1)*100)+"%");
                             if(((priceclose/priceopen)-1)*100>0){
-                                textViewPriceChange.setTextColor(Color.parseColor("#FF66BB6A"));
+                                textViewPriceChange.setTextColor(Color.parseColor("#71cc71"));
+                                exrateicon.setImageDrawable(getDrawable(R.drawable.outline_trending_up_black_48));
                                 textViewPriceChange.setText("+"+textViewPriceChange.getText());
                             }
                             else{
-                                textViewPriceChange.setTextColor(Color.parseColor("#FFEF5350"));
+                                textViewPriceChange.setTextColor(Color.parseColor("#cc7171"));
+                                exrateicon.setImageDrawable(getDrawable(R.drawable.downmarket));
                             }
 
                         } catch (JSONException e) {
@@ -112,7 +115,7 @@ public class MainActivity extends Activity {
         queue.add(JsonObjectRequestPriceClose);
         queue.add(JsonObjectRequestPriceOpen);
 
-        //Add request every 3 seconds.
+        //Add request every 6 seconds.
         Runnable myRepeater = new Runnable() {
             public void run() {
                 queue.add(JsonObjectRequestPriceClose);
@@ -121,7 +124,7 @@ public class MainActivity extends Activity {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(myRepeater, 0, 3, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(myRepeater, 0, 6, TimeUnit.SECONDS);
     }
 
     public void getMarketCap(){
@@ -151,43 +154,14 @@ public class MainActivity extends Activity {
 
     }
 
-    public void getBlockCount(){
-        String url = "https://blockchain.info/q/getblockcount";
-        TextView blockcounttextview = (TextView) findViewById(R.id.tv_blockcount);
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        blockcount=Double.parseDouble(response);
-                        blockcounttextview.setText(usdFormatter.format(blockcount));
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle error
-                    }
-                });
-
-        queue.add(stringRequest);
-
-        //Add request every 30 seconds.
-        Runnable myRepeater = new Runnable() {
-            public void run() {
-                queue.add(stringRequest);
-            }
-        };
-
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(myRepeater, 0, 30, TimeUnit.SECONDS);
-
-    }
 
     public void getBlocks(){
         String url = "https://mempool.space/api/blocks";
         RequestQueue queue = Volley.newRequestQueue(this);
+        TextView blockcounttextview = (TextView) findViewById(R.id.tv_blockcount);
+        TextView tvtx = (TextView) findViewById(R.id.tv_blocktransactions);
+        TextView tvtime = (TextView) findViewById(R.id.tv_timesinceblock);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
@@ -198,12 +172,12 @@ public class MainActivity extends Activity {
                             JSONObject block = response.getJSONObject(0);
                             int timestamp = block.getInt("timestamp");
                             blocktransactions=block.getInt("tx_count");
+                            blockcount=block.getInt("height");
                             Date datenow = new Date();
+                            blockcounttextview.setText(usdFormatter.format(blockcount));
                             timesinceblock= (int) ((datenow.getTime()/1000)-timestamp);
                             timesinceblock=timesinceblock/60;
-                            TextView tvtx = (TextView) findViewById(R.id.tv_blocktransactions);
                             tvtx.setText(usdFormatter.format(blocktransactions)+" Transactions");
-                            TextView tvtime = (TextView) findViewById(R.id.tv_timesinceblock);
                             tvtime.setText("Mined "+timesinceblock+" minutes ago");
                             if(timesinceblock==0){
                                 tvtime.setText("Mined just now");

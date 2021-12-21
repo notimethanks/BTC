@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#101010"
+    android:background="#000000"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
     tools:deviceIds="wear">
@@ -25,10 +25,10 @@
 
             <ImageView
                 android:id="@+id/image_bitcoinlogo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/bitlogo"
+                android:src="@drawable/outline_trending_up_black_48"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="-4dp"
                 android:text="Exchange Rate"
                 android:textColor="#9E9E9E"
                 android:textSize="15dp"
@@ -49,7 +49,7 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="15dp"
                 android:text="Bitcoin"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
@@ -59,13 +59,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/image_bitcoinlogo" />
 
 
-
             <TextView
                 android:id="@+id/tv_pricechange24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
                 android:text="...%"
-                android:textColor="#EF5350"
+                android:textColor="#C6C6C6"
                 android:textSize="22dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
@@ -88,10 +88,10 @@
 
             <ImageView
                 android:id="@+id/image_blocklogo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="37dp"
-                android:src="@drawable/blocklogo"
+                android:src="@drawable/outline_view_timeline_white_48"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_marketcap" />
@@ -100,7 +100,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="-4dp"
                 android:text="Blocks"
                 android:textColor="#9e9e9e"
                 android:textSize="15dp"
@@ -112,7 +112,7 @@
                 android:id="@+id/tv_blockcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="15dp"
                 android:text="Blocks"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
