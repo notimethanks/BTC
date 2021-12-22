@@ -93,12 +93,14 @@ public class MainActivity extends Activity{
                             textViewPriceChange.setText(twodecimalsFormatter.format(((priceclose/priceopen)-1)*100)+"%");
                             if(((priceclose/priceopen)-1)*100>0){
                                 textViewPriceChange.setTextColor(Color.parseColor("#71cc71"));
-                                exrateicon.setImageDrawable(getDrawable(R.drawable.drawable_upmarket));
+                                exrateicon.setImageDrawable(getDrawable(R.drawable.drawable_upmarket_green));
+                                exrateicon.setRotation(0);
                                 textViewPriceChange.setText("+"+textViewPriceChange.getText());
                             }
                             else{
                                 textViewPriceChange.setTextColor(Color.parseColor("#cc7171"));
-                                exrateicon.setImageDrawable(getDrawable(R.drawable.drawable_downmarket));
+                                exrateicon.setImageDrawable(getDrawable(R.drawable.drawable_downmarket_red));
+                                exrateicon.setRotation(0);
                             }
 
                         } catch (JSONException e) {
