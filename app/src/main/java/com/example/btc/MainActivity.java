@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.wear.widget.DismissibleFrameLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,7 +28,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity{
 
     private ActivityMainBinding binding;
     private com.android.volley.toolbox.Volley Volley;
@@ -46,10 +50,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        getMarketCap();
-        getAndSetPriceData();
-        getBlocks();
 
 
     }
@@ -90,12 +90,12 @@ public class MainActivity extends Activity {
                             textViewPriceChange.setText(twodecimalsFormatter.format(((priceclose/priceopen)-1)*100)+"%");
                             if(((priceclose/priceopen)-1)*100>0){
                                 textViewPriceChange.setTextColor(Color.parseColor("#71cc71"));
-                                exrateicon.setImageDrawable(getDrawable(R.drawable.outline_trending_up_black_48));
+                                exrateicon.setImageDrawable(getDrawable(R.drawable.drawable_upmarket));
                                 textViewPriceChange.setText("+"+textViewPriceChange.getText());
                             }
                             else{
                                 textViewPriceChange.setTextColor(Color.parseColor("#cc7171"));
-                                exrateicon.setImageDrawable(getDrawable(R.drawable.downmarket));
+                                exrateicon.setImageDrawable(getDrawable(R.drawable.drawable_downmarket));
                             }
 
                         } catch (JSONException e) {
@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
         queue.add(JsonObjectRequestPriceClose);
         queue.add(JsonObjectRequestPriceOpen);
 
-        //Add request every 6 seconds.
+        //Add request every 3 seconds.
         Runnable myRepeater = new Runnable() {
             public void run() {
                 queue.add(JsonObjectRequestPriceClose);
@@ -124,7 +124,7 @@ public class MainActivity extends Activity {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(myRepeater, 0, 6, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(myRepeater, 0, 3, TimeUnit.SECONDS);
     }
 
     public void getMarketCap(){
@@ -179,6 +179,12 @@ public class MainActivity extends Activity {
                             timesinceblock=timesinceblock/60;
                             tvtx.setText(usdFormatter.format(blocktransactions)+" Transactions");
                             tvtime.setText("Mined "+timesinceblock+" minutes ago");
+                            if(timesinceblock>25){
+                                tvtime.setTextColor(Color.parseColor("#cc7171"));
+                            }
+                            else{
+                                tvtime.setTextColor(Color.parseColor("#D5D5D5"));
+                            }
                             if(timesinceblock==0){
                                 tvtime.setText("Mined just now");
                             }
@@ -210,6 +216,32 @@ public class MainActivity extends Activity {
 
 
 
+    public void onMenuMarket(View view) {
+        setContentView(R.layout.activity_market);
+        DismissibleFrameLayout mylayout = (DismissibleFrameLayout) findViewById(R.id.market_frame);
+        mylayout.registerCallback(new DismissibleFrameLayout.Callback() {
+                                      @Override
+                                      public void onDismissFinished(@NonNull DismissibleFrameLayout layout) {
+                                          super.onDismissFinished(layout);
+                                          setContentView(R.layout.activity_main);
+                                      }
+                                  });
+                getAndSetPriceData();
+        getMarketCap();
+    }
+
+    public void onMenuBlocks(View view) {
+        setContentView(R.layout.activity_blocks);
+        DismissibleFrameLayout mylayout = (DismissibleFrameLayout) findViewById(R.id.blocks_frame);
+        mylayout.registerCallback(new DismissibleFrameLayout.Callback() {
+            @Override
+            public void onDismissFinished(@NonNull DismissibleFrameLayout layout) {
+                super.onDismissFinished(layout);
+                setContentView(R.layout.activity_main);
+            }
+        });
+        getBlocks();
+    }
 
 
 
