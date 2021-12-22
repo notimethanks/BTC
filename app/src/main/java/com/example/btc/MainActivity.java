@@ -254,6 +254,24 @@ public class MainActivity extends Activity{
         getBlocks();
     }
 
+    public void onMenuHalving(View view) {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
+        setContentView(R.layout.activity_halving);
+        DismissibleFrameLayout mylayout = (DismissibleFrameLayout) findViewById(R.id.halving_frame);
+        mylayout.registerCallback(new DismissibleFrameLayout.Callback() {
+            @Override
+            public void onDismissFinished(@NonNull DismissibleFrameLayout layout) {
+                super.onDismissFinished(layout);
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
+                setContentView(R.layout.activity_main);
+            }
+        });
+        //Pull data and fill fields here
+        //getBlocks();
+    }
+
 
 
 }

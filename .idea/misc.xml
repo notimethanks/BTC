@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_blocks.xml" value="1.75" />
-        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_main.xml" value="1.909375" />
-        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_market.xml" value="0.8" />
+        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_main.xml" value="0.45454545454545453" />
         <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/dismissible.xml" value="2.425" />
         <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/tile_layout.xml" value="1.434375" />
+        <entry key="..\:/Users/notim/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_blocks.xml" value="0.8928571428571429" />
+        <entry key="..\:/Users/notim/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_halving.xml" value="1.5035714285714286" />
+        <entry key="..\:/Users/notim/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_main.xml" value="1.0884955752212389" />
+        <entry key="..\:/Users/notim/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_market.xml" value="0.8928571428571429" />
       </map>
     </option>
   </component>
