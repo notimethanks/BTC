@@ -1,9 +1,11 @@
 package com.example.btc;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
+import android.os.VibrationEffect;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import android.os.Vibrator;
 
 public class MainActivity extends Activity{
 
@@ -217,12 +220,16 @@ public class MainActivity extends Activity{
 
 
     public void onMenuMarket(View view) {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
         setContentView(R.layout.activity_market);
         DismissibleFrameLayout mylayout = (DismissibleFrameLayout) findViewById(R.id.market_frame);
         mylayout.registerCallback(new DismissibleFrameLayout.Callback() {
                                       @Override
                                       public void onDismissFinished(@NonNull DismissibleFrameLayout layout) {
                                           super.onDismissFinished(layout);
+                                          Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                          v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
                                           setContentView(R.layout.activity_main);
                                       }
                                   });
@@ -231,12 +238,16 @@ public class MainActivity extends Activity{
     }
 
     public void onMenuBlocks(View view) {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
         setContentView(R.layout.activity_blocks);
         DismissibleFrameLayout mylayout = (DismissibleFrameLayout) findViewById(R.id.blocks_frame);
         mylayout.registerCallback(new DismissibleFrameLayout.Callback() {
             @Override
             public void onDismissFinished(@NonNull DismissibleFrameLayout layout) {
                 super.onDismissFinished(layout);
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
                 setContentView(R.layout.activity_main);
             }
         });
