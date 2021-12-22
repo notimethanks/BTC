@@ -25,7 +25,7 @@
                 android:layout_marginTop="20dp"
                 android:onClick="onMenuMarket"
                 app:cardBackgroundColor="#202020"
-                app:cardCornerRadius="7dp"
+                app:cardCornerRadius="67dp"
                 app:cardElevation="3dp"
                 app:contentPadding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -33,8 +33,8 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:rotation="-5"
                     android:background="@drawable/drawable_upmarket"
                     android:onClick="onMenuMarket"
@@ -65,7 +65,7 @@
                 android:layout_marginTop="10dp"
                 android:onClick="onMenuBlocks"
                 app:cardBackgroundColor="#202020"
-                app:cardCornerRadius="7dp"
+                app:cardCornerRadius="67dp"
                 app:cardElevation="6dp"
                 app:contentPadding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -74,8 +74,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/MarketText">
 
                 <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/drawable_blocks"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/menu_blocks"
@@ -103,7 +103,7 @@
                 android:layout_marginTop="10dp"
                 android:onClick="onMenuBlocks"
                 app:cardBackgroundColor="#202020"
-                app:cardCornerRadius="7dp"
+                app:cardCornerRadius="67dp"
                 app:cardElevation="6dp"
                 app:contentPadding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -112,8 +112,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/BlockText">
 
                 <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/drawable_halving"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/menu_blocks"
@@ -141,7 +141,7 @@
                 android:layout_marginTop="10dp"
                 android:onClick="onMenuBlocks"
                 app:cardBackgroundColor="#202020"
-                app:cardCornerRadius="7dp"
+                app:cardCornerRadius="67dp"
                 app:cardElevation="6dp"
                 app:contentPadding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -150,8 +150,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/HalvingText">
 
                 <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/drawable_mempool"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/menu_blocks"
@@ -179,7 +179,7 @@
                 android:layout_marginTop="10dp"
                 android:onClick="onMenuBlocks"
                 app:cardBackgroundColor="#202020"
-                app:cardCornerRadius="7dp"
+                app:cardCornerRadius="67dp"
                 app:cardElevation="6dp"
                 app:contentPadding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -188,8 +188,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/MempoolText">
 
                 <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/drawable_lightning"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/menu_blocks"
