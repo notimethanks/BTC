@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#151515"
+    android:background="#181818"
     tools:context=".MainActivity"
     tools:deviceIds="wear">
 
@@ -28,16 +28,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.07999998">
+                app:layout_constraintVertical_bias="0.52">
 
                 <ImageButton
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/drawable_upmarket"
+                    android:background="@drawable/drawable_upmarket_green"
                     android:onClick="onMenuMarket"
-                    android:rotation="25"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/menu_market"
                     app:layout_constraintStart_toStartOf="parent"
@@ -47,11 +46,10 @@
                     android:id="@+id/complicationtext_market"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="48.5K"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:textColor="#FFFFFF"
-                    />
+                    android:text="48.5K"
+                    android:textColor="#FFFFFF" />
 
 
             </androidx.cardview.widget.CardView>
@@ -229,7 +227,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.060000002" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
