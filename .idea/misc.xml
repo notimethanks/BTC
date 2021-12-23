@@ -4,7 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_blocks.xml" value="1.75" />
-        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_main.xml" value="1.909375" />
+        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_halving.xml" value="1.35" />
+        <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_main.xml" value="1.3875" />
         <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/activity_market.xml" value="0.8" />
         <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/dismissible.xml" value="2.425" />
         <entry key="..\:/Users/Jok/AndroidStudioProjects/BTC/app/src/main/res/layout/tile_layout.xml" value="1.434375" />
