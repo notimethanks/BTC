@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#181818"
+    android:background="#151515"
     tools:context=".MainActivity"
     tools:deviceIds="wear">
 
@@ -48,8 +48,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:text="48.5K"
-                    android:textColor="#FFFFFF" />
+                    android:text="..."
+                    android:textColor="#FFFFFF"
+                    android:textSize="14dp"/>
 
 
             </androidx.cardview.widget.CardView>
@@ -87,10 +88,11 @@
                     android:id="@+id/complicationtext_blocks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="715K"
+                    android:text="..."
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="22dp"
                     android:textColor="#FFFFFF"
+                    android:textSize="14dp"
                     />
 
             </androidx.cardview.widget.CardView>
@@ -127,10 +129,11 @@
                     android:id="@+id/complicationtext_lightning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3,582"
+                    android:text="..."
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="22dp"
                     android:textColor="#FFFFFF"
+                    android:textSize="14dp"
                     />
 
 
@@ -141,7 +144,7 @@
                 android:id="@+id/cardView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onMenuBlocks"
+                android:onClick="onMenuHalving"
                 app:cardBackgroundColor="#353535"
                 app:cardCornerRadius="67dp"
                 app:cardElevation="6dp"
@@ -169,10 +172,11 @@
                     android:id="@+id/complicationtext_halving"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="895D"
+                    android:text="..."
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="22dp"
                     android:textColor="#FFFFFF"
+                    android:textSize="14dp"
                     />
 
             </androidx.cardview.widget.CardView>
@@ -209,16 +213,17 @@
                     android:id="@+id/complicationtext_mempool"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1,820"
+                    android:text="..."
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="22dp"
                     android:textColor="#FFFFFF"
+                    android:textSize="14dp"
                     />
 
             </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/bitcoinView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:alpha="1"

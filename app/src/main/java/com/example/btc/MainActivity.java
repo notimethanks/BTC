@@ -42,19 +42,137 @@ public class MainActivity extends Activity{
     double blockcount = 0;
     int timesinceblock = 0;
     int blocktransactions = 0;
+    //lightning
+    int lightningnodes = 0;
 
 
     String urlPrice = "https://api.gemini.com/v2/ticker/btcusd";
+    String urlLightning ="https://1ml.com/statistics?json=true";
 
     DecimalFormat usdFormatter = new DecimalFormat("#,###");
     DecimalFormat twodecimalsFormatter = new DecimalFormat("###.##");
+    DecimalFormat onedecimalFormatter = new DecimalFormat("###.#");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setComplictionData();
+    }
+    //Main Display Data Loading
+    public void setComplictionData(){
+        TextView complicationtext_market = (TextView) findViewById(R.id.complicationtext_market);
+        TextView complicationtext_blocks = (TextView) findViewById(R.id.complicationtext_blocks);
+        TextView complicationtext_halving = (TextView) findViewById(R.id.complicationtext_halving);
+        TextView complicationtext_mempool = (TextView) findViewById(R.id.complicationtext_mempool);
+        TextView complicationtext_lightning = (TextView) findViewById(R.id.complicationtext_lightning);
 
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        //Fill mempool transactions complication
+        String mempooltxsurl="https://mempool.space/api/mempool";
+        JsonObjectRequest JsonObjectRequestmempool = new JsonObjectRequest
+                (Request.Method.GET, mempooltxsurl, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            complicationtext_mempool.setText(usdFormatter.format(response.getInt("count")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+
+        //Fill Blocks & Halving complications
+        String url = "https://mempool.space/api/blocks";
+        JsonArrayRequest MempoolBlockRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            JSONObject block = response.getJSONObject(0);
+                            int blockheight = block.getInt("height");
+                            complicationtext_blocks.setText(String.valueOf(blockheight/1000)+"k");
+                            complicationtext_halving.setText(String.valueOf((840000-blockheight)/144)+"d");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+
+        //Fill Market complication
+
+        JsonObjectRequest JsonObjectRequestPriceClose = new JsonObjectRequest
+                (Request.Method.GET, urlPrice, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            priceclose = Double.parseDouble(response.getString("close"));
+                            complicationtext_market.setText("$"+onedecimalFormatter.format(priceclose/1000)+"k");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+        //update lightning complication
+        JsonObjectRequest JsonObjectRequestLightning = new JsonObjectRequest
+                (Request.Method.GET, urlLightning, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            lightningnodes= response.getInt("numberofnodes");
+                            lightningnodes= lightningnodes/1000;
+                            complicationtext_lightning.setText(String.valueOf(lightningnodes)+"k");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+        //Add request every 30 seconds.
+        Runnable myRepeater = new Runnable() {
+            public void run() {
+                queue.add(JsonObjectRequestPriceClose);
+                queue.add(MempoolBlockRequest);
+                queue.add(JsonObjectRequestLightning);
+                queue.add(JsonObjectRequestmempool);
+            }
+        };
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(myRepeater, 0, 30, TimeUnit.SECONDS);
     }
 
     public void getAndSetPriceData() {
@@ -159,8 +277,6 @@ public class MainActivity extends Activity{
 
     }
 
-
-
     public void getBlocks(){
         String url = "https://mempool.space/api/blocks";
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -233,10 +349,11 @@ public class MainActivity extends Activity{
                                           Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                           v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
                                           setContentView(R.layout.activity_main);
+                                          setComplictionData();
                                       }
                                   });
                 getAndSetPriceData();
-        getMarketCap();
+                getMarketCap();
     }
 
     public void onMenuBlocks(View view) {
@@ -251,6 +368,7 @@ public class MainActivity extends Activity{
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
                 setContentView(R.layout.activity_main);
+                setComplictionData();
             }
         });
         getBlocks();
@@ -268,9 +386,10 @@ public class MainActivity extends Activity{
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
                 setContentView(R.layout.activity_main);
+                setComplictionData();
             }
         });
-        //Pull data and fill fields here
+
         //getBlocks();
     }
 

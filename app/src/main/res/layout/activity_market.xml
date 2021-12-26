@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Bitcoin"
+        android:text="..."
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="40dp"
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-5dp"
-        android:text="...%"
+        android:text="..."
         android:textColor="#C6C6C6"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,27 +80,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_pricechange24" />
 
-        <TextView
-            android:id="@+id/tv_marketcap2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:text="More info."
-            android:textColor="#D5D5D5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_marketcap" />
 
-        <TextView
-            android:id="@+id/tv_marketcap3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:text="Even more info."
-            android:textColor="#D5D5D5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_marketcap2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
