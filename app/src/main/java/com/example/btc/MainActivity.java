@@ -25,6 +25,9 @@ import com.example.btc.databinding.ActivityMainBinding;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -35,23 +38,26 @@ public class MainActivity extends Activity{
 
     private ActivityMainBinding binding;
     private com.android.volley.toolbox.Volley Volley;
-    //market data
+
+    //Market Data
     double priceclose = 0;
     double priceopen = 0;
     double marketCap = 0;
+    //Block Data
     double blockcount = 0;
     int timesinceblock = 0;
     int blocktransactions = 0;
-    //lightning
+    //Lightning
     int lightningnodes = 0;
 
 
     String urlPrice = "https://api.gemini.com/v2/ticker/btcusd";
     String urlLightning ="https://1ml.com/statistics?json=true";
+    String urlMempoolTxs="https://mempool.space/api/mempool";
 
-    DecimalFormat usdFormatter = new DecimalFormat("#,###");
-    DecimalFormat twodecimalsFormatter = new DecimalFormat("###.##");
-    DecimalFormat onedecimalFormatter = new DecimalFormat("###.#");
+    DecimalFormat df_usdFormatter = new DecimalFormat("#,###");
+    DecimalFormat df_twodecimalsFormatter = new DecimalFormat("###.##");
+    DecimalFormat df_onedecimalFormatter = new DecimalFormat("###.#");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,14 +77,14 @@ public class MainActivity extends Activity{
         RequestQueue queue = Volley.newRequestQueue(this);
 
         //Fill mempool transactions complication
-        String mempooltxsurl="https://mempool.space/api/mempool";
-        JsonObjectRequest JsonObjectRequestmempool = new JsonObjectRequest
-                (Request.Method.GET, mempooltxsurl, null, new Response.Listener<JSONObject>() {
+
+        JsonObjectRequest JsonRequestMempoolTransactions = new JsonObjectRequest
+                (Request.Method.GET, urlMempoolTxs, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            complicationtext_mempool.setText(usdFormatter.format(response.getInt("count")));
+                            complicationtext_mempool.setText(df_usdFormatter.format(response.getInt("count")));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -94,7 +100,7 @@ public class MainActivity extends Activity{
 
         //Fill Blocks & Halving complications
         String url = "https://mempool.space/api/blocks";
-        JsonArrayRequest MempoolBlockRequest = new JsonArrayRequest
+        JsonArrayRequest JsonRequestBlocks = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
                     @Override
@@ -119,14 +125,14 @@ public class MainActivity extends Activity{
 
         //Fill Market complication
 
-        JsonObjectRequest JsonObjectRequestPriceClose = new JsonObjectRequest
+        JsonObjectRequest JsonRequestPrice = new JsonObjectRequest
                 (Request.Method.GET, urlPrice, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             priceclose = Double.parseDouble(response.getString("close"));
-                            complicationtext_market.setText("$"+onedecimalFormatter.format(priceclose/1000)+"k");
+                            complicationtext_market.setText("$"+df_onedecimalFormatter.format(priceclose/1000)+"k");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -141,7 +147,7 @@ public class MainActivity extends Activity{
                     }
                 });
         //update lightning complication
-        JsonObjectRequest JsonObjectRequestLightning = new JsonObjectRequest
+        JsonObjectRequest JsonRequestLightningNodes = new JsonObjectRequest
                 (Request.Method.GET, urlLightning, null, new Response.Listener<JSONObject>() {
 
                     @Override
@@ -165,17 +171,17 @@ public class MainActivity extends Activity{
         //Add request every 30 seconds.
         Runnable myRepeater = new Runnable() {
             public void run() {
-                queue.add(JsonObjectRequestPriceClose);
-                queue.add(MempoolBlockRequest);
-                queue.add(JsonObjectRequestLightning);
-                queue.add(JsonObjectRequestmempool);
+                queue.add(JsonRequestPrice);
+                queue.add(JsonRequestBlocks);
+                queue.add(JsonRequestLightningNodes);
+                queue.add(JsonRequestMempoolTransactions);
             }
         };
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(myRepeater, 0, 30, TimeUnit.SECONDS);
     }
 
-    public void getAndSetPriceData() {
+    public void FIllMarketLayout() {
         TextView textViewPrice = (TextView) findViewById(R.id.tv_price);
         TextView textViewPriceChange = (TextView) findViewById(R.id.tv_pricechange24);
         ImageView exrateicon = (ImageView) findViewById(R.id.image_bitcoinlogo);
@@ -187,7 +193,7 @@ public class MainActivity extends Activity{
                     public void onResponse(JSONObject response) {
                         try {
                             priceclose = Double.parseDouble(response.getString("close"));
-                            textViewPrice.setText("$" + usdFormatter.format(priceclose));
+                            textViewPrice.setText("$" + df_usdFormatter.format(priceclose));
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -208,7 +214,7 @@ public class MainActivity extends Activity{
                     public void onResponse(JSONObject response) {
                         try {
                             priceopen = Double.parseDouble(response.getString("open"));
-                            textViewPriceChange.setText(twodecimalsFormatter.format(((priceclose/priceopen)-1)*100)+"%");
+                            textViewPriceChange.setText(df_twodecimalsFormatter.format(((priceclose/priceopen)-1)*100)+"%");
                             if(((priceclose/priceopen)-1)*100>0){
                                 textViewPriceChange.setTextColor(Color.parseColor("#71cc71"));
                                 exrateicon.setImageDrawable(getDrawable(R.drawable.drawable_upmarket_green));
@@ -233,10 +239,32 @@ public class MainActivity extends Activity{
 
                     }
                 });
+        String url = "https://blockchain.info/q/marketcap";
+        TextView marketcaptextview = (TextView) findViewById(R.id.tv_marketcap);
+        StringRequest StringRequestMarketcap = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        marketCap=Double.parseDouble(response);
+                        marketCap=marketCap/1000000000;
+                        Math.round(marketCap);
+
+                        marketcaptextview.setText("$"+df_usdFormatter.format(marketCap)+"B Market Cap");
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+                    }
+                });
 
         //Add the request.
         queue.add(JsonObjectRequestPriceClose);
         queue.add(JsonObjectRequestPriceOpen);
+        queue.add(StringRequestMarketcap);
+
 
         //Add request every 3 seconds.
         Runnable myRepeater = new Runnable() {
@@ -250,34 +278,53 @@ public class MainActivity extends Activity{
         executor.scheduleAtFixedRate(myRepeater, 0, 3, TimeUnit.SECONDS);
     }
 
-    public void getMarketCap(){
-        String url = "https://blockchain.info/q/marketcap";
-        TextView marketcaptextview = (TextView) findViewById(R.id.tv_marketcap);
+    public void FillHalvingLayout(){
+        String url = "https://mempool.space/api/blocks";
+        TextView daysToHalving = (TextView) findViewById(R.id.tv_halvingdays);
+        TextView blocksToHalving = (TextView) findViewById(R.id.tv_blockstohalving);
+        TextView halvingETA = (TextView) findViewById(R.id.tv_halvingeta);
         RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
+        JsonArrayRequest JsonRequestBlocks = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
                     @Override
-                    public void onResponse(String response) {
-                        marketCap=Double.parseDouble(response);
-                        marketCap=marketCap/1000000000;
-                        Math.round(marketCap);
-
-                        marketcaptextview.setText("$"+usdFormatter.format(marketCap)+"B Market Cap");
-
+                    public void onResponse(JSONArray response) {
+                        try {
+                            JSONObject block = response.getJSONObject(0);
+                            int blockheight = block.getInt("height");
+                            daysToHalving.setText(df_usdFormatter.format(840000-blockheight));
+                            blocksToHalving.setText("~ "+String.valueOf((840000-blockheight)/144)+" Days");
+                            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd yyyy");
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(new Date()); // Using today's date
+                            c.add(Calendar.DATE, (840000-blockheight)/144); // Adding 5 days
+                            String output = sdf.format(c.getTime());
+                            halvingETA.setText("~ "+output);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                },
-                new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
+
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Handle error
+
                     }
                 });
+        queue.add(JsonRequestBlocks);
+        //Add request every 30 seconds.
+        Runnable myRepeater = new Runnable() {
+            public void run() {
+                queue.add(JsonRequestBlocks);
+            }
+        };
 
-        queue.add(stringRequest);
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(myRepeater, 0, 30, TimeUnit.SECONDS);
 
     }
 
-    public void getBlocks(){
+    public void FillBlocksLayout(){
         String url = "https://mempool.space/api/blocks";
         RequestQueue queue = Volley.newRequestQueue(this);
         TextView blockcounttextview = (TextView) findViewById(R.id.tv_blockcount);
@@ -295,10 +342,10 @@ public class MainActivity extends Activity{
                             blocktransactions=block.getInt("tx_count");
                             blockcount=block.getInt("height");
                             Date datenow = new Date();
-                            blockcounttextview.setText(usdFormatter.format(blockcount));
+                            blockcounttextview.setText(df_usdFormatter.format(blockcount));
                             timesinceblock= (int) ((datenow.getTime()/1000)-timestamp);
                             timesinceblock=timesinceblock/60;
-                            tvtx.setText(usdFormatter.format(blocktransactions)+" Transactions");
+                            tvtx.setText(df_usdFormatter.format(blocktransactions)+" Transactions");
                             tvtime.setText("Mined "+timesinceblock+" minutes ago");
                             if(timesinceblock>25){
                                 tvtime.setTextColor(Color.parseColor("#cc7171"));
@@ -336,8 +383,8 @@ public class MainActivity extends Activity{
     }
 
 
-
-    public void onMenuMarket(View view) {
+//Market Complication Clicked
+    public void openMarketLayout(View view) {
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
         setContentView(R.layout.activity_market);
@@ -352,10 +399,9 @@ public class MainActivity extends Activity{
                                           setComplictionData();
                                       }
                                   });
-                getAndSetPriceData();
-                getMarketCap();
+                FIllMarketLayout();
     }
-
+//Blocks Complication Clicked
     public void onMenuBlocks(View view) {
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -371,9 +417,9 @@ public class MainActivity extends Activity{
                 setComplictionData();
             }
         });
-        getBlocks();
+        FillBlocksLayout();
     }
-
+//Halving Complication Clicked
     public void onMenuHalving(View view) {
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -389,8 +435,7 @@ public class MainActivity extends Activity{
                 setComplictionData();
             }
         });
-
-        //getBlocks();
+        FillHalvingLayout();
     }
 
 
