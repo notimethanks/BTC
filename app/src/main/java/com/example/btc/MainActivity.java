@@ -294,7 +294,7 @@ public class MainActivity extends Activity{
                             int blockheight = block.getInt("height");
                             daysToHalving.setText(df_usdFormatter.format(840000-blockheight));
                             blocksToHalving.setText("~ "+String.valueOf((840000-blockheight)/144)+" Days");
-                            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd yyyy");
+                            SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy");
                             Calendar c = Calendar.getInstance();
                             c.setTime(new Date()); // Using today's date
                             c.add(Calendar.DATE, (840000-blockheight)/144); // Adding 5 days
@@ -382,6 +382,63 @@ public class MainActivity extends Activity{
         executor.scheduleAtFixedRate(myRepeater, 0, 30, TimeUnit.SECONDS);
     }
 
+    public void FillMempoolLayout(){
+        TextView transactions = (TextView) findViewById(R.id.tv_mempool_transactions);
+        TextView blocktoclear = (TextView) findViewById(R.id.tv_mempool_blockstoclear);
+        TextView fees = (TextView) findViewById(R.id.tv_mempool_fees);
+        String urlMempoolFees = "https://mempool.space/api/v1/fees/recommended";
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest JsonRequestMempoolTransactions = new JsonObjectRequest
+                (Request.Method.GET, urlMempoolTxs, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            transactions.setText(df_usdFormatter.format(response.getInt("count"))+" txs");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+        JsonObjectRequest JsonRequestMempoolFees = new JsonObjectRequest
+                (Request.Method.GET, urlMempoolFees, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            fees.setText(response.getString("fastestFee")+" Sats/vb");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+        //Add request every 3 seconds.
+        Runnable myRepeater = new Runnable() {
+            public void run() {
+                queue.add(JsonRequestMempoolTransactions);
+                queue.add(JsonRequestMempoolFees);
+            }
+        };
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(myRepeater, 0, 3, TimeUnit.SECONDS);
+
+    }
+
 
 //Market Complication Clicked
     public void openMarketLayout(View view) {
@@ -437,7 +494,24 @@ public class MainActivity extends Activity{
         });
         FillHalvingLayout();
     }
-
+  //Mempool Complication Clicked
+    public void onMenuMempool(View view) {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
+        setContentView(R.layout.activity_mempool);
+        DismissibleFrameLayout mylayout = (DismissibleFrameLayout) findViewById(R.id.mempool_frame);
+        mylayout.registerCallback(new DismissibleFrameLayout.Callback() {
+            @Override
+            public void onDismissFinished(@NonNull DismissibleFrameLayout layout) {
+                super.onDismissFinished(layout);
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(VibrationEffect.createOneShot(15, VibrationEffect.DEFAULT_AMPLITUDE));
+                setContentView(R.layout.activity_main);
+                setComplictionData();
+            }
+        });
+       FillMempoolLayout();
+    }
 
 
 }
